@@ -1,0 +1,338 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0f0d0a;
+  --bg-input: #120f0a;
+  --bg-card: #241e18;
+  --text-primary: #f0e6d3;
+  --text-secondary: #a89070;
+  --text-muted: #6b5a47;
+  --accent: #c8854a;
+  --accent-hover: #d9935a;
+  --accent-dim: #8a5c32;
+  --border-soft: #2e261e;
+  --border-input: #3d3028;
+  --border-accent: #5a3f26;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.tp-root {
+  min-height: 100vh;
+  padding: 3rem 1.5rem 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.tp-container {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* Header */
+.tp-header {
+  position: relative;
+}
+
+.tp-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.tp-title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.tp-subtitle {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+}
+
+.tp-settings-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.tp-settings-btn:hover {
+  color: var(--text-secondary);
+}
+
+.tp-settings-panel {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tp-settings-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tp-settings-input {
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.tp-settings-input:focus {
+  border-color: var(--border-accent);
+}
+
+.tp-settings-input::placeholder {
+  color: var(--text-muted);
+}
+
+.tp-settings-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Style pills */
+.tp-style-section {}
+
+.tp-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tp-pill {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.tp-pill:hover {
+  background: var(--bg-card);
+  border-color: var(--border-input);
+  color: var(--text-primary);
+}
+
+.tp-pill--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.tp-pill--active:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--text-primary);
+}
+
+/* Input */
+.tp-input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.tp-textarea {
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-bottom: none;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  padding: 1.25rem 1.25rem;
+  resize: vertical;
+  outline: none;
+  width: 100%;
+  min-height: 160px;
+  transition: border-color 0.2s;
+}
+
+.tp-textarea:focus {
+  border-color: var(--border-accent);
+}
+
+.tp-textarea::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.tp-transform-btn {
+  background: var(--accent);
+  color: var(--text-primary);
+  border: none;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.tp-transform-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.tp-transform-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tp-loading-text {
+  font-style: italic;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  animation: tp-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes tp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Error */
+.tp-error {
+  font-size: 0.85rem;
+  color: #c07060;
+  padding: 0.75rem 1rem;
+  border: 1px solid #3d2520;
+  background: #1a100d;
+}
+
+/* Output */
+.tp-output-section {}
+
+.tp-output-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  padding: 2rem 2rem 1.5rem;
+}
+
+.tp-output-text {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  letter-spacing: 0.01em;
+}
+
+.tp-loading-placeholder {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text-muted);
+  font-size: 1rem;
+  animation: tp-pulse 1.5s ease-in-out infinite;
+}
+
+.tp-output-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.tp-output-style-tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tp-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tp-copy-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-input);
+}
+
+@media (max-width: 480px) {
+  .tp-root {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .tp-title {
+    font-size: 1.75rem;
+  }
+
+  .tp-output-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+
+  .tp-output-text {
+    font-size: 1.05rem;
+  }
+}

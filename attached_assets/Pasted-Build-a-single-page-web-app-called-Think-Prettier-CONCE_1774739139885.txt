@@ -1,0 +1,82 @@
+Build a single-page web app called "Think Prettier."
+
+CONCEPT:
+User pastes messy, raw thoughts → AI rewrites them into beautiful language in a chosen style.
+
+STACK:
+- Plain HTML, CSS, vanilla JS (single index.html file, no frameworks)
+- Anthropic API (claude-sonnet-4-20250514) called from the frontend directly
+
+---
+
+STYLES (show as selectable pills/tabs):
+1. Poetic / Lyrical
+2. Aesthetic Prose
+3. Minimalist / Aphoristic
+4. Dark & Philosophical
+5. Intellectual
+6. Feminist PhD Professor
+
+---
+
+SYSTEM PROMPT TO USE IN THE API CALL:
+
+"You are a language transformation engine. Your sole purpose is to take raw, messy, unfinished human thoughts and rewrite them into beautiful, resonant language — enhancing and expanding with creative liberty while preserving the emotional core.
+
+You have six transformation styles. The user will specify which one they want:
+
+1. POETIC / LYRICAL — Use rhythm, imagery, and metaphor. Let the language breathe and shimmer. Think Virginia Woolf meets Mary Oliver.
+2. AESTHETIC PROSE — Lush, immersive, sensory. Every sentence has texture. Think literary fiction at its finest.
+3. MINIMALIST / APHORISTIC — Strip to the bone. One or two lines that land hard. Think Maggie Nelson's Bluets or a Zen koan.
+4. DARK & PHILOSOPHICAL — Brooding, contemplative, existential. Think Cioran, late Rilke, Pessoa.
+5. INTELLECTUAL — Precise, elegant, conceptually rich. Think Didion, Baldwin, Sontag.
+6. FEMINIST PHD PROFESSOR — Rigorous but lyrical. Theoretically informed, with fire. Think bell hooks meets Judith Butler.
+
+RULES:
+- Take creative liberty. Enhance, expand, transform.
+- Preserve the emotional truth and core meaning.
+- Default tone: dreamy + fierce + intense + clean, all at once.
+- Output ONLY the transformed text. No title, no label, no preamble, no explanation.
+- Match scale to input. Don't bloat, don't shrink.
+- Never explain your choices."
+
+---
+
+USER MESSAGE FORMAT (construct this dynamically):
+"Style: [selected style]
+
+Original thought:
+[textarea input]"
+
+---
+
+UI REQUIREMENTS:
+- API key entered by the user in a settings input (stored in localStorage, never hardcoded)
+- Style selector as clickable pills at the top
+- Large textarea for raw input
+- "Transform" button
+- Output appears below in a styled card
+- Copy to clipboard button on the output
+- Show a loading state while waiting for the API response
+
+---
+
+APPEARANCE:
+- Aesthetic: downtown autumn — warm, moody, intellectual. Think rainy bookshop windows, 
+  wet brick, amber streetlights, fallen leaves on pavement.
+- Background: very dark warm brown (#1a1410 or #0f0d0a), not pure black
+- Text colors: warm cream/off-white (#f0e6d3) for primary, muted tan (#a89070) for secondary
+- Accent color: muted rust/amber (#c8854a) for active pills, buttons, and hover states
+- Font pairing: Playfair Display (Google Fonts) for the app title and output text — 
+  Inter or DM Sans for UI labels, pills, and input fields
+- Input textarea: dark warm background (#120f0a), soft rust border, cream placeholder text
+- Output card: slightly lighter than the page background (#241e18), 
+  like aged paper under dim lamplight — output text in Playfair Display, cream colored
+- Style pills: dark background, tan text when inactive — rust background, 
+  cream text when active
+- Transform button: full-width, rust/amber background, cream text, 
+  no rounded corners (sharp, editorial feel)
+- Loading state: subtle pulsing text, something like "rewriting..." in italic Playfair
+- No gradients, no glassmorphism, no neon, no drop shadows
+- Slightly tight letter-spacing on headings, generous line-height on output text
+- Overall mood: a girl reading in the park with coffee and headphones in October

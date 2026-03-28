@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Think Prettier"
+version = "1.0.0"
+id = "artifacts/think-prettier"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24317
+
+[services.development]
+run = "pnpm --filter @workspace/think-prettier run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/think-prettier", "run", "build" ]
+publicDir = "artifacts/think-prettier/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24317"
+BASE_PATH = "/"
