@@ -298,6 +298,39 @@ body {
   color: var(--text-muted);
 }
 
+.tp-output-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tp-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tp-save-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--border-input);
+}
+
+.tp-save-btn--saved {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  cursor: default;
+}
+
 .tp-copy-btn {
   display: flex;
   align-items: center;
@@ -317,6 +350,142 @@ body {
 .tp-copy-btn:hover {
   color: var(--text-primary);
   border-color: var(--border-input);
+}
+
+/* Saved toggle button in header */
+.tp-saved-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--border-soft);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 1rem;
+  align-self: center;
+}
+
+.tp-saved-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--border-input);
+}
+
+/* Saved entries section */
+.tp-saved-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tp-saved-heading {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.tp-saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tp-saved-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  padding: 1.25rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.tp-saved-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tp-saved-style-tag {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tp-saved-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tp-saved-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.tp-saved-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color 0.2s;
+}
+
+.tp-saved-delete:hover {
+  color: #c07060;
+}
+
+.tp-saved-transformed {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+}
+
+.tp-saved-original-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+  align-self: flex-start;
+}
+
+.tp-saved-original-toggle:hover {
+  color: var(--text-secondary);
+}
+
+.tp-saved-original {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  border-left: 2px solid var(--border-soft);
+  padding-left: 0.85rem;
+  font-style: italic;
 }
 
 @media (max-width: 480px) {
