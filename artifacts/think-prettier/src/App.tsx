@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 const STYLES = [
   { id: "poetic", label: "Poetic / Lyrical" },
@@ -18,88 +18,59 @@ const STYLE_NAMES: Record<string, string> = {
   feminist: "FEMINIST PHD PROFESSOR",
 };
 
-const SYSTEM_PROMPT = `You are a language transformation engine. Your sole purpose is to take raw, messy, unfinished human thoughts and rewrite them into beautiful, resonant language — enhancing and expanding with creative liberty while preserving the emotional core.
-
-You have six transformation styles. The user will specify which one they want:
-
-1. POETIC / LYRICAL — Use rhythm, imagery, and metaphor. Let the language breathe and shimmer. Think Virginia Woolf meets Mary Oliver.
-2. AESTHETIC PROSE — Lush, immersive, sensory. Every sentence has texture. Think literary fiction at its finest.
-3. MINIMALIST / APHORISTIC — Strip to the bone. One or two lines that land hard. Think Maggie Nelson's Bluets or a Zen koan.
-4. DARK & PHILOSOPHICAL — Brooding, contemplative, existential. Think Cioran, late Rilke, Pessoa.
-5. INTELLECTUAL — Precise, elegant, conceptually rich. Think Didion, Baldwin, Sontag.
-6. FEMINIST PHD PROFESSOR — Rigorous but lyrical. Theoretically informed, with fire. Think bell hooks meets Judith Butler.
-
-RULES:
-- Take creative liberty. Enhance, expand, transform.
-- Preserve the emotional truth and core meaning.
-- Default tone: dreamy + fierce + intense + clean, all at once.
-- Output ONLY the transformed text. No title, no label, no preamble, no explanation.
-- Match scale to input. Don't bloat, don't shrink.
-- Never explain your choices.`;
-
 export default function App() {
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem("tp_api_key") || "");
-  const [showSettings, setShowSettings] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState("poetic");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
-  const settingsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (apiKey) localStorage.setItem("tp_api_key", apiKey);
-  }, [apiKey]);
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
-        setShowSettings(false);
-      }
-    }
-    if (showSettings) document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [showSettings]);
 
   async function handleTransform() {
     if (!input.trim()) return;
-    if (!apiKey.trim()) {
-      setError("Please enter your Anthropic API key in settings.");
-      return;
-    }
 
     setLoading(true);
     setError("");
     setOutput("");
 
-    const userMessage = `Style: ${STYLE_NAMES[selectedStyle]}\n\nOriginal thought:\n${input.trim()}`;
-
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/transform", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-5",
-          max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages: [{ role: "user", content: userMessage }],
+          style: STYLE_NAMES[selectedStyle],
+          input: input.trim(),
         }),
       });
 
-      if (!res.ok) {
+      if (!res.ok || !res.body) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error?.message || `API error: ${res.status}`);
+        throw new Error((data as { error?: string }).error || `Error: ${res.status}`);
       }
 
-      const data = await res.json();
-      const text = data?.content?.[0]?.text || "";
-      setOutput(text);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const payload = JSON.parse(line.slice(6)) as {
+            content?: string;
+            done?: boolean;
+            error?: string;
+          };
+          if (payload.error) throw new Error(payload.error);
+          if (payload.content) setOutput((prev) => prev + payload.content);
+        }
+      }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -123,32 +94,7 @@ export default function App() {
               <h1 className="tp-title">Think Prettier</h1>
               <p className="tp-subtitle">raw thoughts, made beautiful.</p>
             </div>
-            <button
-              className="tp-settings-btn"
-              onClick={() => setShowSettings((s) => !s)}
-              aria-label="Settings"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
-            </button>
           </div>
-
-          {showSettings && (
-            <div className="tp-settings-panel" ref={settingsRef}>
-              <label className="tp-settings-label">Anthropic API Key</label>
-              <input
-                type="password"
-                className="tp-settings-input"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-ant-..."
-                autoComplete="off"
-              />
-              <p className="tp-settings-hint">Stored locally in your browser. Never sent anywhere except Anthropic.</p>
-            </div>
-          )}
         </header>
 
         <section className="tp-style-section">
